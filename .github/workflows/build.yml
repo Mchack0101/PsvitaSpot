@@ -8,14 +8,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    container:
-      image: vitasdk/vitasdk:latest
-
     steps:
       # Step 1: Checkout repo
       - uses: actions/checkout@v3
 
-      # Step 2: Build Vita app
+      # Step 2: Install dependencies
+      - name: Install Vita SDK & build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git cmake build-essential python3 wget unzip
+
+          # Install latest VitaSDK
+          git clone --depth=1 https://github.com/vitasdk/vitasdk.git vitasdk
+          cd vitasdk
+          ./bootstrap.sh
+          ./configure --prefix=$HOME/vitasdk
+          make -j$(nproc) install
+          echo "export PATH=$HOME/vitasdk/bin:$PATH" >> $GITHUB_ENV
+
+      # Step 3: Build the app
       - name: Build App
         run: |
           mkdir build
@@ -23,7 +34,7 @@ jobs:
           cmake ..
           make
 
-      # Step 3: Upload compiled VPK
+      # Step 4: Upload VPK
       - name: Upload VPK
         uses: actions/upload-artifact@v4
         with:
