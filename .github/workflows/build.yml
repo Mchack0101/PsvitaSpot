@@ -8,19 +8,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Use official prebuilt VitaSDK Docker container
     container:
       image: vitasdk/vitasdk:latest
 
     steps:
+      # Step 1: Checkout the repo
       - uses: actions/checkout@v3
 
-      - name: Build App
+      # Step 2: Build the app
+      - name: Build PsvitaSpot
         run: |
           mkdir build
           cd build
           cmake ..
           make
 
+      # Step 3: Upload the VPK artifact
       - name: Upload VPK
         uses: actions/upload-artifact@v4
         with:
