@@ -4,8 +4,8 @@ project(PsvitaSpot)
 
 include("${VITASDK}/share/vita.cmake" REQUIRED)
 
-set(VITA_APP_NAME "CSpotNext")
-set(VITA_TITLEID  "CSPOT0001")
+set(VITA_APP_NAME "PsvitaSpot")
+set(VITA_TITLEID  "PSPOT0001")
 set(VITA_VERSION  "01.00")
 
 add_executable(${PROJECT_NAME}
