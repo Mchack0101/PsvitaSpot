@@ -10,6 +10,13 @@ set(VITA_VERSION  "01.00")
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/Application.cpp
+    src/Renderer.cpp
+    src/InputHandler.cpp
+)
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 target_link_libraries(${PROJECT_NAME}
