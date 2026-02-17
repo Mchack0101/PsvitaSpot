@@ -1,6 +1,6 @@
 #include "Renderer.h"
 #include "Constants.h"
-#include <vitaGL.h>
+#include <vitagl.h>
 
 namespace PsvitaSpot {
 
