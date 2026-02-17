@@ -1,11 +1,12 @@
-# VitaSDK Makefile for PsvitaSpot
+# VitaSDK Makefile for PsvitaSpot (C++)
 TARGET = PsvitaSpot
-SRC = $(wildcard src/*.c)
+SRC = $(shell find src -name "*.cpp")   # <-- grabs all .cpp files
 BUILD = build
 RESOURCES = resources/*
 PARAM_SFO = param.sfo
 
-CFLAGS = -O2 -Wall -Iinclude
+CXX = arm-vita-eabi-g++                 # Use g++ for C++ files
+CXXFLAGS = -O2 -Wall -Iinclude
 LDFLAGS =
 
 all: $(BUILD)/$(TARGET).vpk
@@ -18,7 +19,7 @@ $(BUILD)/$(TARGET).vpk: $(BUILD)/$(TARGET).elf
 $(BUILD)/$(TARGET).elf: $(SRC)
 	@mkdir -p $(BUILD)
 	@echo "Compiling ELF..."
-	arm-vita-eabi-gcc $(CFLAGS) -o $(BUILD)/$(TARGET).elf $(SRC) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $(BUILD)/$(TARGET).elf $(SRC) $(LDFLAGS)
 
 clean:
 	@echo "Cleaning build folder..."
