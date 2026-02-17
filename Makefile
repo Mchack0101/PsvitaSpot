@@ -1,18 +1,18 @@
-# PsvitaSpot full Makefile (C++ / VitaGL)
-
+# PsvitaSpot Makefile (C++ / VitaGL in VitaSDK include)
 TARGET = PsvitaSpot
-SRC = $(shell find src -name "*.cpp")        # all cpp files recursively
+PROJECT_SRC = $(shell find src -name "*.cpp")
+VITAGL_SRC = $(shell find $(VITASDK)/include/vitaGL/source -name "*.c" -o -name "*.cpp")
+SRC = $(PROJECT_SRC) $(VITAGL_SRC)
 BUILD = build
 RESOURCES = resources/*
 PARAM_SFO = param.sfo
 
-CXX = arm-vita-eabi-g++                     # use g++ for C++ sources
+CXX = arm-vita-eabi-g++               # C++ compiler
 VITASDK ?= /usr/local/vitasdk
 
-# Include paths for headers
-CXXFLAGS = -O2 -Wall -Iinclude -I$(VITASDK)/include -I$(VITASDK)/include/vitagl
-# Link paths for libraries
-LDFLAGS = -L$(VITASDK)/lib -lvitagl
+# Include paths
+CXXFLAGS = -O2 -Wall -Iinclude -I$(VITASDK)/include -I$(VITASDK)/include/vitaGL
+LDFLAGS =                              # no separate lib needed
 
 all: $(BUILD)/$(TARGET).vpk
 
