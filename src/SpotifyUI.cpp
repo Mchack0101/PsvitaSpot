@@ -52,6 +52,7 @@ void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
     float centerY = Config::SCREEN_HEIGHT / 2.0f;
     float albumArtY = centerY - 150;
 
+    // Draw album art placeholder
     glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
     glBegin(GL_QUADS);
         glVertex2f(360, albumArtY);
@@ -62,16 +63,20 @@ void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
 
     renderText("NOW PLAYING", 480 - 60, albumArtY - 40, 1.5f, 1.0f, 1.0f, 1.0f);
 
+    // Track information
     renderText(state.trackName, 480 - (state.trackName.length() * 6), albumArtY + 260, 2.0f, 1.0f, 1.0f, 1.0f);
     renderText(state.artistName, 480 - (state.artistName.length() * 5), albumArtY + 290, 1.5f, 0.7f, 0.7f, 0.7f);
     renderText(state.albumName, 480 - (state.albumName.length() * 4), albumArtY + 315, 1.2f, 0.5f, 0.5f, 0.5f);
 
+    // Progress bar
     float progressBarY = albumArtY + 360;
     renderProgressBar(state.progressMs, state.durationMs, 280, progressBarY, 400, 8);
 
+    // Time display
     std::string timeStr = formatTime(state.progressMs) + " / " + formatTime(state.durationMs);
     renderText(timeStr, 480 - (timeStr.length() * 4), progressBarY + 20, 1.0f, 0.6f, 0.6f, 0.6f);
 
+    // Control buttons
     float buttonY = progressBarY + 60;
     float buttonSpacing = 90;
     float startX = 240;
@@ -81,9 +86,11 @@ void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
     renderButton("NEXT", startX + buttonSpacing * 2, buttonY, 80, 40, false);
     renderButton(state.shuffle ? "SHFL ON" : "SHFL OFF", startX + buttonSpacing * 3, buttonY, 80, 40, state.shuffle);
 
+    // Volume display
     std::string volumeStr = "Volume: " + std::to_string(state.volume) + "%";
     renderText(volumeStr, 480 - (volumeStr.length() * 4), buttonY + 60, 1.2f, 0.8f, 0.8f, 0.8f);
 
+    // Control instructions
     renderText("Controls: X=Play/Pause | L/R=Prev/Next | Up/Down=Volume | Square=Shuffle",
                20, Config::SCREEN_HEIGHT - 40, 1.0f, 0.5f, 0.5f, 0.5f);
     renderText("START to exit", 20, Config::SCREEN_HEIGHT - 20, 1.0f, 0.5f, 0.5f, 0.5f);
@@ -107,6 +114,7 @@ void SpotifyUI::renderDisconnectedUI() {
 }
 
 void SpotifyUI::renderProgressBar(int current, int total, float x, float y, float width, float height) {
+    // Background bar
     glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
     glBegin(GL_QUADS);
         glVertex2f(x, y);
@@ -115,6 +123,7 @@ void SpotifyUI::renderProgressBar(int current, int total, float x, float y, floa
         glVertex2f(x, y + height);
     glEnd();
 
+    // Progress fill
     if (total > 0) {
         float progress = static_cast<float>(current) / static_cast<float>(total);
         float progressWidth = width * progress;
@@ -132,9 +141,19 @@ void SpotifyUI::renderProgressBar(int current, int total, float x, float y, floa
 void SpotifyUI::renderText(const std::string& text, float x, float y, float size, float r, float g, float b) {
     glColor4f(r, g, b, 1.0f);
     glRasterPos2f(x, y);
+    
+    // TODO: Implement actual text rendering with font support
+    // This requires integrating a font rendering library such as:
+    // - ImGui (recommended for PS Vita)
+    // - Custom bitmap font renderer
+    // - FreeType + custom rendering
+    
+    // Placeholder implementation sets up color and position
+    // The actual text will not render without font support
 }
 
 void SpotifyUI::renderButton(const std::string& label, float x, float y, float width, float height, bool highlight) {
+    // Button background
     if (highlight) {
         glColor4f(0.3f, 0.9f, 0.5f, 0.8f);
     } else {
@@ -148,6 +167,7 @@ void SpotifyUI::renderButton(const std::string& label, float x, float y, float w
         glVertex2f(x, y + height);
     glEnd();
 
+    // Button border
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glBegin(GL_LINE_LOOP);
         glVertex2f(x, y);
@@ -156,6 +176,7 @@ void SpotifyUI::renderButton(const std::string& label, float x, float y, float w
         glVertex2f(x, y + height);
     glEnd();
 
+    // Button label
     renderText(label, x + 10, y + height / 2 + 5, 1.2f, 1.0f, 1.0f, 1.0f);
 }
 
