@@ -41,10 +41,12 @@ private:
     std::string makeRequest(const std::string& endpoint, const std::string& method, const std::string& body = "");
     bool parsePlaybackResponse(const std::string& response, PlaybackState& state);
     long getCurrentTime() const;
+    std::string extractJsonField(const std::string& json, const std::string& field) const;
 
     Spotify::Credentials m_credentials;
     PlaybackState m_lastState;
     bool m_initialized = false;
+    void* m_netMemory = nullptr;  // Track allocated network memory for cleanup
 };
 
 }
