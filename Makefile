@@ -29,6 +29,9 @@ LDFLAGS = -L$(VITASDK)/arm-vita-eabi/lib \
           -lSceGxm_stub \
           -lSceSysmodule_stub \
           -lSceTouch_stub \
+          -lSceNet_stub \
+          -lSceNetCtl_stub \
+          -lSceHttp_stub \
           -lm \
           -lpthread
 

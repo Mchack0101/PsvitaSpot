@@ -4,11 +4,14 @@
 
 namespace PsvitaSpot {
 
+class PlaybackManager;
+
 class InputHandler {
 public:
     InputHandler() = default;
 
     void update();
+    void handleSpotifyControls(PlaybackManager* manager);
 
     bool isPressed(uint32_t button) const;
     bool isHeld(uint32_t button) const;

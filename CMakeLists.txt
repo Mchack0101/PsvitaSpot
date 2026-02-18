@@ -13,6 +13,9 @@ add_executable(${PROJECT_NAME}
     src/Application.cpp
     src/Renderer.cpp
     src/InputHandler.cpp
+    src/SpotifyAPI.cpp
+    src/SpotifyUI.cpp
+    src/PlaybackManager.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -21,9 +24,20 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME}
     vitaGL
+    vitashark
+    SceShaccCgExt
+    SceShaccCg_stub
+    taihen_stub
     SceGxm_stub
     SceDisplay_stub
     SceCtrl_stub
+    SceNet_stub
+    SceNetCtl_stub
+    SceHttp_stub
+    SceSysmodule_stub
+    SceAppUtil_stub
+    m
+    pthread
 )
 
 vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
