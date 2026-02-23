@@ -32,10 +32,11 @@ target_include_directories(PsvitaSpot PRIVATE include)
 
 target_link_libraries(PsvitaSpot
   vitaGL
-  vitashark
-  SceShaccCgExt_stub
+- vitashark
   SceShaccCg_stub
-  taihen_stub
+  SceNet_stub
+  SceHttp_stub
+  SceSysmodule_stub
   SceAppMgr_stub
   SceAppUtil_stub
   SceAudio_stub
@@ -45,9 +46,6 @@ target_link_libraries(PsvitaSpot
   SceGxm_stub
   SceSysmodule_stub
   SceTouch_stub
-  SceNet_stub
-  SceNetCtl_stub
-  SceHttp_stub
   m
   pthread
 )
