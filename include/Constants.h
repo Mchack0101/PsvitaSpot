@@ -1,14 +1,15 @@
 #pragma once
 
-namespace PsvitaSpot {
-namespace Config {
-    constexpr int SCREEN_WIDTH = 960;
-    constexpr int SCREEN_HEIGHT = 544;
-    constexpr int VGLMEM_SIZE = 0x800000;
-
-    constexpr float CLEAR_COLOR_R = 0.07f;
-    constexpr float CLEAR_COLOR_G = 0.07f;
-    constexpr float CLEAR_COLOR_B = 0.07f;
-    constexpr float CLEAR_COLOR_A = 1.0f;
-}
+namespace Constants {
+    constexpr const char* APP_TITLE = "PsvitaSpot";
+    constexpr const char* APP_VERSION = "1.0.0";
+    
+    constexpr unsigned int DISPLAY_WIDTH = 960;
+    constexpr unsigned int DISPLAY_HEIGHT = 544;
+    constexpr unsigned int DISPLAY_STRIDE = 1024;
+    
+    constexpr unsigned int VRAM_WIDTH = 1024;
+    constexpr unsigned int VRAM_HEIGHT = 1024;
+    
+    constexpr float TARGET_FPS = 60.0f;
 }
