@@ -1,27 +1,26 @@
 #pragma once
 
-#include <vitasdk.h>
-
-namespace PsvitaSpot {
-
-class PlaybackManager;
+#include <psp2/ctrl.h>
 
 class InputHandler {
-public:
-    InputHandler() = default;
-
-    void update();
-    void handleSpotifyControls(PlaybackManager* manager);
-
-    bool isPressed(uint32_t button) const;
-    bool isHeld(uint32_t button) const;
-    bool isReleased(uint32_t button) const;
-
-    bool shouldExit() const;
-
 private:
-    SceCtrlData m_currentPad = {};
-    SceCtrlData m_previousPad = {};
-};
+    SceCtrlData currentPad;
+    SceCtrlData lastPad;
 
-}
+public:
+    InputHandler();
+    ~InputHandler();
+    
+    void Initialize();
+    void Update();
+    void Shutdown();
+    
+    bool IsButtonPressed(SceCtrlButtons button) const;
+    bool IsButtonHeld(SceCtrlButtons button) const;
+    bool IsButtonReleased(SceCtrlButtons button) const;
+    
+    int GetLAnalogX() const;
+    int GetLAnalogY() const;
+    int GetRAnalogX() const;
+    int GetRAnalogY() const;
+};
