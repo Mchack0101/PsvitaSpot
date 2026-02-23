@@ -1,57 +1,51 @@
 #include "InputHandler.h"
-#include "PlaybackManager.h"
+#include <cstring>
 
-namespace PsvitaSpot {
-
-void InputHandler::update() {
-    m_previousPad = m_currentPad;
-    sceCtrlPeekBufferPositive(0, &m_currentPad, 1);
+InputHandler::InputHandler() {
+    memset(&currentPad, 0, sizeof(SceCtrlData));
+    memset(&lastPad, 0, sizeof(SceCtrlData));
 }
 
-void InputHandler::handleSpotifyControls(PlaybackManager* manager) {
-    if (!manager) {
-        return;
-    }
-
-    if (isPressed(SCE_CTRL_CROSS)) {
-        manager->togglePlayPause();
-    }
-
-    if (isPressed(SCE_CTRL_LTRIGGER)) {
-        manager->previous();
-    }
-
-    if (isPressed(SCE_CTRL_RTRIGGER)) {
-        manager->next();
-    }
-
-    if (isPressed(SCE_CTRL_SQUARE)) {
-        manager->toggleShuffle();
-    }
-
-    if (isPressed(SCE_CTRL_UP)) {
-        manager->volumeUp();
-    }
-
-    if (isPressed(SCE_CTRL_DOWN)) {
-        manager->volumeDown();
-    }
+InputHandler::~InputHandler() {
+    Shutdown();
 }
 
-bool InputHandler::isPressed(uint32_t button) const {
-    return (m_currentPad.buttons & button) && !(m_previousPad.buttons & button);
+void InputHandler::Initialize() {
+    sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
 }
 
-bool InputHandler::isHeld(uint32_t button) const {
-    return (m_currentPad.buttons & button) != 0;
+void InputHandler::Update() {
+    lastPad = currentPad;
+    sceCtrlPeekBufferPositive(0, &currentPad, 1);
 }
 
-bool InputHandler::isReleased(uint32_t button) const {
-    return !(m_currentPad.buttons & button) && (m_previousPad.buttons & button);
+void InputHandler::Shutdown() {
 }
 
-bool InputHandler::shouldExit() const {
-    return isPressed(SCE_CTRL_START);
+bool InputHandler::IsButtonPressed(SceCtrlButtons button) const {
+    return (currentPad.buttons & button) && !(lastPad.buttons & button);
 }
 
+bool InputHandler::IsButtonHeld(SceCtrlButtons button) const {
+    return currentPad.buttons & button;
+}
+
+bool InputHandler::IsButtonReleased(SceCtrlButtons button) const {
+    return !(currentPad.buttons & button) && (lastPad.buttons & button);
+}
+
+int InputHandler::GetLAnalogX() const {
+    return currentPad.lx;
+}
+
+int InputHandler::GetLAnalogY() const {
+    return currentPad.ly;
+}
+
+int InputHandler::GetRAnalogX() const {
+    return currentPad.rx;
+}
+
+int InputHandler::GetRAnalogY() const {
+    return currentPad.ry;
 }
