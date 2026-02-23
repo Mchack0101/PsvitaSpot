@@ -1,23 +1,15 @@
 #pragma once
 
-namespace PsvitaSpot {
-
 class Renderer {
 public:
-    Renderer() = default;
+    Renderer();
     ~Renderer();
-
-    bool initialize();
-    void shutdown();
-
-    void beginFrame();
-    void endFrame();
-    void clear(float r, float g, float b, float a);
-
-    bool isInitialized() const { return m_initialized; }
-
-private:
-    bool m_initialized = false;
+    
+    bool Initialize();
+    void Clear();
+    void Present();
+    void Shutdown();
+    
+    float GetDisplayWidth() const;
+    float GetDisplayHeight() const;
 };
-
-}
