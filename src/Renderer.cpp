@@ -1,58 +1,39 @@
 #include "Renderer.h"
 #include "Constants.h"
-#include <vitagl.h>
+#include <vitaGL.h>
+#include <psp2/display.h>
 
-namespace PsvitaSpot {
+Renderer::Renderer() {}
 
 Renderer::~Renderer() {
-    shutdown();
+    Shutdown();
 }
 
-bool Renderer::initialize() {
-    if (m_initialized) {
-        return true;
-    }
-
-    vglInitExtended(
-        0,
-        Config::SCREEN_WIDTH,
-        Config::SCREEN_HEIGHT,
-        Config::VGLMEM_SIZE,
-        SCE_GXM_MULTISAMPLE_4X
-    );
-
-    m_initialized = true;
+bool Renderer::Initialize() {
+    vglInitExtended(0, Constants::VRAM_WIDTH, Constants::VRAM_HEIGHT, 0x60000, SCE_GXM_MULTISAMPLE_NONE);
+    
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glViewport(0, 0, Constants::DISPLAY_WIDTH, Constants::DISPLAY_HEIGHT);
+    
     return true;
 }
 
-void Renderer::shutdown() {
-    if (m_initialized) {
-        vglEnd();
-        m_initialized = false;
-    }
+void Renderer::Clear() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::beginFrame() {
-    if (!m_initialized) {
-        return;
-    }
-    vglStartRendering();
-}
-
-void Renderer::endFrame() {
-    if (!m_initialized) {
-        return;
-    }
-    vglEndRendering();
+void Renderer::Present() {
     vglSwapBuffers(GL_FALSE);
 }
 
-void Renderer::clear(float r, float g, float b, float a) {
-    if (!m_initialized) {
-        return;
-    }
-    glClearColor(r, g, b, a);
-    glClear(GL_COLOR_BUFFER_BIT);
+void Renderer::Shutdown() {
+    vglEnd();
 }
 
+float Renderer::GetDisplayWidth() const {
+    return Constants::DISPLAY_WIDTH;
+}
+
+float Renderer::GetDisplayHeight() const {
+    return Constants::DISPLAY_HEIGHT;
 }
