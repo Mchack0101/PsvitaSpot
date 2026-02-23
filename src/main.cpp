@@ -1,73 +1,115 @@
 #include <vitaGL.h>
+#include <psp2/kernel/processmgr.h>
 #include <psp2/ctrl.h>
-#include <psp2/display.h>
-#include <psp2/kernel/threadmgr.h>
-#include <psp2/sysmodule.h>
-#include <psp2/net/net.h>
-#include <psp2/net/netctl.h>
-#include <psp2/http.h>
-#include <cstdio>
-#include <cstring>
+#include <psp2/io/fcntl.h>
+#include <psp2/io/stat.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "Renderer.h"
-#include "SpotifyAPI.h"
-#include "Constants.h"
+
+#define TOKEN_PATH "ux0:data/PsvitaSpot/token.dat"
+
+Renderer renderer;
+
+/* ===============================
+   TOKEN SAVE / LOAD FUNCTIONS
+   =============================== */
+
+void saveRefreshToken(const char* token) {
+    // create folder if missing
+    sceIoMkdir("ux0:data/PsvitaSpot", 0777);
+
+    SceUID fd = sceIoOpen(
+        TOKEN_PATH,
+        SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC,
+        0777
+    );
+
+    if (fd >= 0) {
+        sceIoWrite(fd, token, strlen(token));
+        sceIoClose(fd);
+        printf("Refresh token saved.\n");
+    }
+}
+
+bool loadRefreshToken(char* buffer, size_t size) {
+    SceUID fd = sceIoOpen(TOKEN_PATH, SCE_O_RDONLY, 0777);
+
+    if (fd < 0)
+        return false;
+
+    int read = sceIoRead(fd, buffer, size - 1);
+    sceIoClose(fd);
+
+    if (read <= 0)
+        return false;
+
+    buffer[read] = '\0';
+    return true;
+}
+
+/* ===============================
+   SPOTIFY LOGIN PLACEHOLDERS
+   (you already have similar logic)
+   =============================== */
+
+void startSpotifyOAuthLogin() {
+    printf("Opening Spotify login...\n");
+
+    // TODO:
+    // your existing OAuth browser/device login code goes here
+    // once login succeeds you must call:
+    //
+    // saveRefreshToken(received_refresh_token);
+}
+
+void spotifyLoginWithRefreshToken(const char* refreshToken) {
+    printf("Auto logging using saved refresh token...\n");
+
+    // TODO:
+    // your API request:
+    // POST https://accounts.spotify.com/api/token
+    // grant_type=refresh_token
+    // refresh_token=<token>
+}
+
+/* ===============================
+   MAIN APP LOOP
+   =============================== */
 
 int main() {
-    // Load network & HTTP modules
-    sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
-    sceSysmoduleLoadModule(SCE_SYSMODULE_HTTP);
 
-    // Initialize renderer
-    Renderer renderer;
-    renderer.Initialize();
-
-    // Controller setup
-    SceCtrlData pad;
     sceCtrlSetSamplingMode(SCE_CTRL_MODE_ANALOG);
 
-    // Spotify API (replace with your token)
-    SpotifyAPI spotify("YOUR_SPOTIFY_OAUTH_TOKEN");
+    renderer.Initialize();
 
-    bool running = true;
-    while (running) {
-        // Poll controller input
+    char refreshToken[512];
+
+    // ---- AUTO LOGIN CHECK ----
+    if (loadRefreshToken(refreshToken, sizeof(refreshToken))) {
+        printf("Saved token found.\n");
+        spotifyLoginWithRefreshToken(refreshToken);
+    } else {
+        printf("No saved token.\n");
+        startSpotifyOAuthLogin();
+    }
+
+    // ---- BASIC LOOP ----
+    while (1) {
+
+        SceCtrlData pad;
         sceCtrlPeekBufferPositive(0, &pad, 1);
-        if (pad.buttons & SCE_CTRL_START) running = false;
-        if (pad.buttons & SCE_CTRL_CROSS) spotify.play();
-        if (pad.buttons & SCE_CTRL_CIRCLE) spotify.pause();
-        if (pad.buttons & SCE_CTRL_TRIANGLE) spotify.nextTrack();
-        if (pad.buttons & SCE_CTRL_SQUARE) spotify.previousTrack();
 
-        // Clear screen
+        // Press START to exit
+        if (pad.buttons & SCE_CTRL_START)
+            break;
+
         renderer.Clear();
-
-        // Fetch track info
-        std::string track = spotify.getCurrentTrack();
-        std::string artist = spotify.getCurrentArtist();
-        float progress = spotify.getTrackProgress(); // 0.0 - 1.0
-
-        // Draw text
-        vglPrintConsole(10, 10, 0xFFFFFFFF, ("Track: " + track).c_str());
-        vglPrintConsole(10, 30, 0xFFFFFFFF, ("Artist: " + artist).c_str());
-
-        // Draw progress bar
-        int barX = 10;
-        int barY = 60;
-        int barWidth = Constants::DISPLAY_WIDTH - 20;
-        int barHeight = 10;
-
-        // Background
-        vglDrawRect(barX, barY, barWidth, barHeight, 0xFF444444);
-        // Filled progress
-        vglDrawRect(barX, barY, int(barWidth * progress), barHeight, 0xFF00FF00);
-
-        // Swap buffers
         renderer.Present();
-
-        // Wait 50ms
-        sceKernelDelayThread(50000);
     }
 
     renderer.Shutdown();
+    sceKernelExitProcess(0);
     return 0;
 }
