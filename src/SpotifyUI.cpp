@@ -1,6 +1,6 @@
 #include "SpotifyUI.h"
 #include "Constants.h"
-#include <vitagl.h>
+#include <vitaGL.h>
 #include <cstdio>
 #include <cmath>
 

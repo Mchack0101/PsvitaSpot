@@ -1,4 +1,6 @@
 #include "Renderer.h"
+#include "Constants.h"
+#include <vitaGL.h>
 
 Renderer::Renderer() {}
 Renderer::~Renderer() { Shutdown(); }
@@ -21,5 +23,13 @@ void Renderer::Present() {
 }
 
 void Renderer::Shutdown() {
-    vglDeinit();
+    vglEnd();
+}
+
+float Renderer::GetDisplayWidth() const {
+    return static_cast<float>(Constants::DISPLAY_WIDTH);
+}
+
+float Renderer::GetDisplayHeight() const {
+    return static_cast<float>(Constants::DISPLAY_HEIGHT);
 }
