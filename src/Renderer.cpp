@@ -24,6 +24,7 @@ void Renderer::Present() {
 
 void Renderer::Shutdown() {
     vglEnd();
+    glFinish();
 }
 
 float Renderer::GetDisplayWidth() const {

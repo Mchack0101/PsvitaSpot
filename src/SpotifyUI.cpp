@@ -5,6 +5,7 @@
 #include <cmath>
 
 namespace PsvitaSpot {
+using namespace ::Config;
 
 SpotifyUI::SpotifyUI()
     : m_initialized(false) {
@@ -42,7 +43,7 @@ void SpotifyUI::render(const PlaybackState& state, bool connected) {
 void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT, 0, -1, 1);
+    glOrtho(0.0f, static_cast<float>(Config::SCREEN_WIDTH), static_cast<float>(Config::SCREEN_HEIGHT), 0.0f, -1.0f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -101,7 +102,7 @@ void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
 void SpotifyUI::renderDisconnectedUI() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, Config::SCREEN_WIDTH, Config::SCREEN_HEIGHT, 0, -1, 1);
+    glOrtho(0.0f, static_cast<float>(Config::SCREEN_WIDTH), static_cast<float>(Config::SCREEN_HEIGHT), 0.0f, -1.0f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
