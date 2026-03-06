@@ -29,6 +29,7 @@ add_executable(PsvitaSpot
 )
 
 target_include_directories(PsvitaSpot PRIVATE include)
+target_include_directories(PsvitaSpot SYSTEM PRIVATE ${VITASDK}/arm-vita-eabi/include)
 
 target_link_libraries(PsvitaSpot
   vitaGL
