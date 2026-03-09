@@ -1,6 +1,6 @@
 TARGET = PsvitaSpot
 TITLEID = PSPOT0001
-PROJECT_SRC = $(shell find src -name "*.cpp")
+PROJECT_SRC = src/main.cpp src/Renderer.cpp
 OBJS = $(PROJECT_SRC:.cpp=.o)
 BUILD = build
 RESOURCES = resources
@@ -29,6 +29,7 @@ LDFLAGS = -L$(VITASDK)/arm-vita-eabi/lib \
 	-lSceNet_stub \
 	-lSceNetCtl_stub \
 	-lSceHttp_stub \
+	-lSceIofilemgr_stub \
 	-lm \
 	-lpthread
 

@@ -12,9 +12,7 @@ namespace Constants {
     constexpr unsigned int VRAM_HEIGHT = 1024;
 
     constexpr float TARGET_FPS = 60.0f;
-}
 
-namespace Config {
     constexpr unsigned int SCREEN_WIDTH = 960;
     constexpr unsigned int SCREEN_HEIGHT = 544;
 }

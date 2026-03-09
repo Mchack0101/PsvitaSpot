@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Constants.h"
 #include <vitaGL.h>
+#include <psp2/gxm.h>
 
 Renderer::Renderer() {}
 Renderer::~Renderer() { Shutdown(); }

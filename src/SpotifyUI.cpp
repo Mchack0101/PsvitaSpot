@@ -5,7 +5,6 @@
 #include <cmath>
 
 namespace PsvitaSpot {
-using namespace ::Config;
 
 SpotifyUI::SpotifyUI()
     : m_initialized(false) {
@@ -43,14 +42,14 @@ void SpotifyUI::render(const PlaybackState& state, bool connected) {
 void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0f, static_cast<float>(Config::SCREEN_WIDTH), static_cast<float>(Config::SCREEN_HEIGHT), 0.0f, -1.0f, 1.0f);
+    glOrtho(0.0f, static_cast<float>(Constants::SCREEN_WIDTH), static_cast<float>(Constants::SCREEN_HEIGHT), 0.0f, -1.0f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    float centerY = Config::SCREEN_HEIGHT / 2.0f;
+    float centerY = Constants::SCREEN_HEIGHT / 2.0f;
     float albumArtY = centerY - 150;
 
     // Draw album art placeholder
@@ -93,8 +92,8 @@ void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
 
     // Control instructions
     renderText("Controls: X=Play/Pause | L/R=Prev/Next | Up/Down=Volume | Square=Shuffle",
-               20, Config::SCREEN_HEIGHT - 40, 1.0f, 0.5f, 0.5f, 0.5f);
-    renderText("START to exit", 20, Config::SCREEN_HEIGHT - 20, 1.0f, 0.5f, 0.5f, 0.5f);
+               20, Constants::SCREEN_HEIGHT - 40, 1.0f, 0.5f, 0.5f, 0.5f);
+    renderText("START to exit", 20, Constants::SCREEN_HEIGHT - 20, 1.0f, 0.5f, 0.5f, 0.5f);
 
     glDisable(GL_BLEND);
 }
@@ -102,16 +101,16 @@ void SpotifyUI::renderConnectedUI(const PlaybackState& state) {
 void SpotifyUI::renderDisconnectedUI() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0f, static_cast<float>(Config::SCREEN_WIDTH), static_cast<float>(Config::SCREEN_HEIGHT), 0.0f, -1.0f, 1.0f);
+    glOrtho(0.0f, static_cast<float>(Constants::SCREEN_WIDTH), static_cast<float>(Constants::SCREEN_HEIGHT), 0.0f, -1.0f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    float centerY = Config::SCREEN_HEIGHT / 2.0f;
+    float centerY = Constants::SCREEN_HEIGHT / 2.0f;
 
     renderText("PsvitaSpot", 480 - 60, centerY - 100, 3.0f, 0.3f, 0.9f, 0.5f);
     renderText("Not connected to Spotify", 480 - 120, centerY, 1.5f, 0.8f, 0.2f, 0.2f);
     renderText("Configure credentials to connect", 480 - 140, centerY + 40, 1.2f, 0.6f, 0.6f, 0.6f);
-    renderText("START to exit", 20, Config::SCREEN_HEIGHT - 20, 1.0f, 0.5f, 0.5f, 0.5f);
+    renderText("START to exit", 20, Constants::SCREEN_HEIGHT - 20, 1.0f, 0.5f, 0.5f, 0.5f);
 }
 
 void SpotifyUI::renderProgressBar(int current, int total, float x, float y, float width, float height) {

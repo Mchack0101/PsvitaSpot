@@ -23,13 +23,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -O2")
 
 add_executable(PsvitaSpot
   src/main.cpp
-  src/Application.cpp
   src/Renderer.cpp
-  src/InputHandler.cpp
 )
 
 target_include_directories(PsvitaSpot PRIVATE include)
-target_include_directories(PsvitaSpot SYSTEM PRIVATE ${VITASDK}/arm-vita-eabi/include)
 target_include_directories(PsvitaSpot SYSTEM PRIVATE ${VITASDK}/arm-vita-eabi/include)
 
 target_link_libraries(PsvitaSpot
@@ -47,6 +44,7 @@ target_link_libraries(PsvitaSpot
   SceDisplay_stub
   SceGxm_stub
   SceTouch_stub
+  SceIofilemgr_stub
   m
   pthread
 )
